@@ -1,15 +1,23 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Chess OCR Chrome Extension",
   "version": "1.0",
   "description": "A Chrome extension that uses OCR to recognize chess boards and provides suggestions.",
-  "icons": {
-    "16": "icon16.png",
-    "32": "icon32.png",
-    "48": "icon48.png",
-    "128": "icon128.png"
-  },
-  "browser_action": {
+  "icons": [
+    {
+      "src": "icon16.png"
+    },
+    {
+      "src": "icon32.png"
+    },
+    {
+      "src": "icon48.png"
+    },
+    {
+      "src": "icon128.png"
+    }
+  ],
+  "action": {
     "default_icon": {
       "16": "icon16.png",
       "32": "icon32.png",
@@ -18,8 +26,8 @@
     },
     "default_popup": "popup.html"
   },
-  "permissions": [
-    "activeTab"
+  "host_permissions": [
+    "https://www.chess.com/*"
   ],
   "content_scripts": [
     {
@@ -30,15 +38,11 @@
         "node_modules/jsdom/lib/api.js",
         "node_modules/tesseract.js/src/Tesseract.js",
         "content.js"
-      ]
+      ],
+      "run_at": "document_end"
     }
   ],
   "background": {
-    "scripts": [
-      "node_modules/jsdom/lib/api.js",
-      "node_modules/tesseract.js/src/Tesseract.js",
-      "background.js"
-    ],
-    "persistent": false
+    "service_worker": "background.js"
   }
 }
