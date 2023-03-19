@@ -16,12 +16,16 @@
         "https://www.chess.com/*"
       ],
       "js": [
+        "jsdom.js",
+        "tesseract.js",
         "content.js"
       ]
     }
   ],
   "background": {
     "scripts": [
+      "jsdom.js",
+      "tesseract.js",
       "background.js"
     ],
     "persistent": false

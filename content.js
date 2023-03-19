@@ -1,3 +1,6 @@
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
+const Tesseract = require("tesseract.js");
 let recognitionActive = false;
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -19,8 +22,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 function getChessBoardImage() {
-    const chessBoardElement = document.querySelector(".chess-board-selector");
-    const canvas = document.createElement("canvas");
+    const virtualConsole = new jsdom.VirtualConsole();
+    const dom = new JSDOM(window.document.documentElement.outerHTML, {
+        virtualConsole,
+        resources: "usable",
+        runScripts: "dangerously",
+    });
+    const chessBoardElement = dom.window.document.querySelector(
+        ".chess-board-selector"
+    );
+    const canvas = dom.window.document.createElement("canvas");
     canvas.width = chessBoardElement.clientWidth;
     canvas.height = chessBoardElement.clientHeight;
     const ctx = canvas.getContext("2d");
@@ -38,14 +49,9 @@ function convertToChessFEN(data) {
 function sendDataToPythonScript(fen) {
     console.log("Fake-submitting FEN:", fen);
     // Simulate fake suggestions received from the server
-    const suggestions = [
-        "Suggestion 1",
-        "Suggestion 2",
-        "Suggestion 3",
-    ];
+    const suggestions = ["Suggestion 1", "Suggestion 2", "Suggestion 3"];
     displaySuggestions(suggestions);
 }
-
 
 function displaySuggestions(suggestions) {
     const overlay = document.createElement("div");
