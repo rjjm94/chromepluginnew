@@ -30,7 +30,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 async function getChessBoardImage() {
   try {
     console.debug("Extracting chess board image");
-    const chessBoardElement = document.querySelector("#board-vs-personalities");
+    const chessBoardElement = document.querySelector("#board-single");
+    console.log("Chess board element info:", chessBoardElement);
+    console.log("Element type:", chessBoardElement.nodeName.toLowerCase());
+    console.log("Element attributes:", chessBoardElement.attributes);
+
     if (chessBoardElement.nodeName.toLowerCase() === 'svg') {
       const chessBoardImage = svgToImage(chessBoardElement);
       processChessBoardImage(chessBoardImage);
@@ -66,10 +70,8 @@ function processChessBoardImage(chessBoardImage) {
 
 function convertToChessFEN(data) {
   try {
-    // Custom algorithm to convert recognized text data to a chess board layout
     console.debug("Converting recognized data to chess FEN");
     const chess = new Chess();
-    // Update the chess.js object with the converted chess board layout
     return chess.fen();
   } catch (error) {
     console.error("Error converting to chess FEN:", error);
@@ -79,7 +81,6 @@ function convertToChessFEN(data) {
 function sendDataToPythonScript(fen) {
   try {
     console.log("Fake-submitting FEN:", fen);
-    // Simulate fake suggestions received from the server
     const suggestions = [
       "Suggestion 1",
       "Suggestion 2",
