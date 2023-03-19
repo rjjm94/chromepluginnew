@@ -1,6 +1,3 @@
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
-const Tesseract = require("tesseract.js");
 let recognitionActive = false;
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -8,38 +5,37 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         recognitionActive = !recognitionActive;
 
         if (recognitionActive) {
+            console.log("Recognition activated.");
             const chessBoardImage = getChessBoardImage();
             Tesseract.recognize(chessBoardImage)
                 .then((result) => {
+                    console.log("OCR success:", result);
                     const fen = convertToChessFEN(result.data);
                     sendDataToPythonScript(fen);
                 })
                 .catch((error) => {
                     console.error("OCR error:", error);
                 });
+        } else {
+            console.log("Recognition deactivated.");
         }
     }
 });
 
 function getChessBoardImage() {
-    const virtualConsole = new jsdom.VirtualConsole();
-    const dom = new JSDOM(window.document.documentElement.outerHTML, {
-        virtualConsole,
-        resources: "usable",
-        runScripts: "dangerously",
-    });
-    const chessBoardElement = dom.window.document.querySelector(
-        ".chess-board-selector"
-    );
-    const canvas = dom.window.document.createElement("canvas");
+    console.log("Finding chess board image...");
+    const chessBoardElement = document.querySelector(".chess-board-selector");
+    const canvas = document.createElement("canvas");
     canvas.width = chessBoardElement.clientWidth;
     canvas.height = chessBoardElement.clientHeight;
     const ctx = canvas.getContext("2d");
     ctx.drawImage(chessBoardElement, 0, 0);
+    console.log("Chess board image found.");
     return canvas.toDataURL();
 }
 
 function convertToChessFEN(data) {
+    console.log("Converting OCR output to chess FEN...");
     // Custom algorithm to convert recognized text data to a chess board layout
     const chess = new Chess();
     // Update the chess.js object with the converted chess board layout
@@ -49,11 +45,16 @@ function convertToChessFEN(data) {
 function sendDataToPythonScript(fen) {
     console.log("Fake-submitting FEN:", fen);
     // Simulate fake suggestions received from the server
-    const suggestions = ["Suggestion 1", "Suggestion 2", "Suggestion 3"];
+    const suggestions = [
+        "Suggestion 1",
+        "Suggestion 2",
+        "Suggestion 3",
+    ];
     displaySuggestions(suggestions);
 }
 
 function displaySuggestions(suggestions) {
+    console.log("Displaying suggestions:", suggestions);
     const overlay = document.createElement("div");
     overlay.style.position = "absolute";
     overlay.style.zIndex = 1000;
