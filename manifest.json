@@ -18,9 +18,7 @@
   },
   "permissions": [
     "activeTab",
-    "<all_urls>",
-    "webRequest",
-    "webRequestBlocking"
+    "<all_urls>"
   ],
   "content_scripts": [
     {
