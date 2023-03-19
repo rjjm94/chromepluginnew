@@ -1,7 +1,6 @@
-// Since there's no specific functionality needed for the background script,
-// you can leave it empty for now. Later, if you need to add any background
-// functionalities, you can add the code here.
+console.log("Chess OCR Chrome Extension background script loaded");
+
 chrome.browserAction.onClicked.addListener((tab) => {
-    console.log("Toggle recognition clicked.");
-    chrome.tabs.sendMessage(tab.id, { action: "toggleRecognition" });
+  console.log("Toggle recognition clicked");
+  chrome.tabs.sendMessage(tab.id, { action: "toggleRecognition" });
 });
