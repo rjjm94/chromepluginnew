@@ -1,27 +1,23 @@
 {
   "manifest_version": 2,
-  "name": "Chess Analysis Extension",
-  "version": "1.0.0",
-  "description": "Analyze chess positions with Tesseract OCR",
-  "icons": {
-    "48": "icon_48.png",
-    "128": "icon_128.png"
-  },
+  "name": "Chess OCR Chrome Extension",
+  "version": "1.0",
+  "description": "A Chrome extension for recognizing chess boards and providing suggestions",
   "permissions": [
     "activeTab",
-    "storage",
-    "<all_urls>"
+    "tabs",
+    "http://*/*",
+    "https://*/*",
+    "storage"
   ],
   "browser_action": {
-    "default_icon": "icon_48.png",
+    "default_icon": "icon48.png",
     "default_popup": "popup.html",
-    "default_title": "Chess Analysis Extension"
+    "default_title": "Chess OCR Chrome Extension"
   },
   "content_scripts": [
     {
-      "matches": [
-        "https://www.chess.com/*"
-      ],
+      "matches": ["http://*/*", "https://*/*"],
       "js": [
         "node_modules/dom.js/src/index.js",
         "content.js",
@@ -30,6 +26,15 @@
       "run_at": "document_end"
     }
   ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
   "web_accessible_resources": [
     "node_modules/tesseract.js/dist/worker.min.js"
   ]
