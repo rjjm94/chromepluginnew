@@ -28,7 +28,7 @@
       ],
       "js": [
         "node_modules/jsdom/lib/api.js",
-        "node_modules/tesseract.js/dist/tesseract.js",
+        "node_modules/tesseract.js/src/Tesseract.js",
         "content.js"
       ]
     }
@@ -36,7 +36,7 @@
   "background": {
     "scripts": [
       "node_modules/jsdom/lib/api.js",
-      "node_modules/tesseract.js/dist/tesseract.js",
+      "node_modules/tesseract.js/src/Tesseract.js",
       "background.js"
     ],
     "persistent": false
