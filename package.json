@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "dom.js": "^0.2.0",
+    "html2canvas": "^1.4.1",
     "tesseract.js": "^3.0.3"
   }
 }

@@ -8,68 +8,30 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     if (recognitionActive) {
       console.log("Chess board recognition activated");
-      const chessBoardImage = getChessBoardImage();
-      console.debug("Starting Tesseract OCR recognition");
-      Tesseract.recognize(chessBoardImage)
-        .then((result) => {
-          console.debug("Tesseract OCR recognition completed");
-          const fen = convertToChessFEN(result.data);
-          console.log("FEN string extracted:", fen);
-          sendDataToPythonScript(fen);
-        })
-        .catch((error) => {
-          console.error("OCR error:", error);
-        });
+      getChessBoardImage().then((chessBoardImage) => {
+        console.debug("Starting Tesseract OCR recognition");
+        Tesseract.recognize(chessBoardImage)
+          .then((result) => {
+            console.debug("Tesseract OCR recognition completed");
+            const fen = convertToChessFEN(result.data);
+            console.log("FEN string extracted:", fen);
+            sendDataToPythonScript(fen);
+          })
+          .catch((error) => {
+            console.error("OCR error:", error);
+          });
+      });
     } else {
       console.log("Chess board recognition deactivated");
     }
   }
 });
 
-function convertToChessFEN(recognizedData) {
-  console.debug("Converting recognized data to FEN");
-  const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-  const ranks = [8, 7, 6, 5, 4, 3, 2, 1];
-  let fen = "";
-
-  for (const rank of ranks) {
-    let emptySquares = 0;
-    for (const file of files) {
-      const position = `${file}${rank}`;
-      const piece = recognizedData[position];
-
-      if (piece) {
-        if (emptySquares > 0) {
-          fen += emptySquares;
-          emptySquares = 0;
-        }
-        fen += piece;
-      } else {
-        emptySquares++;
-      }
-    }
-    if (emptySquares > 0) {
-      fen += emptySquares;
-    }
-    if (rank > 1) {
-      fen += '/';
-    }
-  }
-  fen += ' w KQkq - 0 1'; // Add default castling, en passant, halfmove, and fullmove info
-  console.debug("FEN conversion completed");
-  return fen;
-}
-
-
-function getChessBoardImage() {
+async function getChessBoardImage() {
   try {
     console.debug("Extracting chess board image");
     const chessBoardElement = document.querySelector("#board-vs-personalities");
-    const canvas = document.createElement("canvas");
-    canvas.width = chessBoardElement.clientWidth;
-    canvas.height = chessBoardElement.clientHeight;
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(chessBoardElement, 0, 0);
+    const canvas = await html2canvas(chessBoardElement);
     const imageData = canvas.toDataURL();
     console.log("Chess board image data extracted:", imageData);
     return imageData;
