@@ -1,6 +1,5 @@
 console.log("Chess OCR Chrome Extension content script loaded");
 
-
 let recognitionActive = false;
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {

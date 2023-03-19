@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "dom.js": "^0.2.0",
     "tesseract.js": "^3.0.3"
   }
 }
