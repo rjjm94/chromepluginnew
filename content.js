@@ -31,12 +31,36 @@ async function getChessBoardImage() {
   try {
     console.debug("Extracting chess board image");
     const chessBoardElement = document.querySelector("#board-vs-personalities");
+    if (chessBoardElement.nodeName.toLowerCase() === 'svg') {
+      const chessBoardImage = svgToImage(chessBoardElement);
+      processChessBoardImage(chessBoardImage);
+    } else {
+      processChessBoardImage(chessBoardElement);
+    }
     const canvas = await html2canvas(chessBoardElement);
     const imageData = canvas.toDataURL();
     console.log("Chess board image data extracted:", imageData);
     return imageData;
   } catch (error) {
     console.error("Error getting chess board image:", error);
+  }
+}
+
+function svgToImage(svgElement) {
+  const svgString = new XMLSerializer().serializeToString(svgElement);
+  const img = new Image();
+  const svgBlob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
+  const url = URL.createObjectURL(svgBlob);
+  img.src = url;
+  return img;
+}
+
+function processChessBoardImage(chessBoardImage) {
+  try {
+    const backgroundUrl = "https://www.chess.com/boards/blue/150.png";
+    chessBoardImage.style.backgroundImage = `url(${backgroundUrl})`;
+  } catch (error) {
+    console.error("Error processing chess board image:", error);
   }
 }
 
