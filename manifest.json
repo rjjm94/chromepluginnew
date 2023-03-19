@@ -27,7 +27,7 @@
         "https://www.chess.com/*"
       ],
       "js": [
-        "node_modules/jsdom/lib/jsdom.js",
+        "node_modules/jsdom/lib/api.js",
         "node_modules/tesseract.js/dist/tesseract.js",
         "content.js"
       ]
@@ -35,7 +35,7 @@
   ],
   "background": {
     "scripts": [
-      "node_modules/jsdom/lib/jsdom.js",
+      "node_modules/jsdom/lib/api.js",
       "node_modules/tesseract.js/dist/tesseract.js",
       "background.js"
     ],
