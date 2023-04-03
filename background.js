@@ -4,3 +4,4 @@ chrome.browserAction.onClicked.addListener((tab) => {
   console.log("Toggle recognition clicked");
   chrome.tabs.sendMessage(tab.id, { action: "toggleRecognition" });
 });
+

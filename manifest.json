@@ -19,7 +19,6 @@
     {
       "matches": ["http://*/*", "https://*/*"],
       "js": [
-        "node_modules/dom.js/src/index.js",
         "content.js",
         "node_modules/tesseract.js/dist/tesseract.min.js",
         "node_modules/html2canvas/dist/html2canvas.js"
